@@ -1,0 +1,1578 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+
+  background: #07140f;
+  color: #f5ead2;
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button,
+a {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =====================================================
+   WORLD
+===================================================== */
+
+.expedition-world {
+  position: relative;
+
+  min-height: 100vh;
+
+  overflow-x: hidden;
+  overflow-y: visible;
+
+  isolation: isolate;
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(73, 119, 79, 0.35),
+      transparent 35%
+    ),
+    #07140f;
+}
+
+.cinematic-vignette {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 30;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle,
+      transparent 35%,
+      rgba(0, 0, 0, 0.85)
+    );
+}
+
+/* =====================================================
+   HUD
+===================================================== */
+
+.expedition-hud {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  z-index: 50;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 22px 36px;
+
+  border-bottom:
+    1px solid
+    rgba(245, 234, 210, 0.12);
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(3, 12, 8, 0.82),
+      rgba(3, 12, 8, 0)
+    );
+
+  backdrop-filter: blur(5px);
+}
+
+.hud-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hud-number {
+  font-size: 10px;
+  letter-spacing: 0.24em;
+
+  color: #d8ad5b;
+}
+
+.hud-brand strong {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+
+.hud-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 10px;
+  letter-spacing: 0.18em;
+
+  color:
+    rgba(245, 234, 210, 0.65);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #8fbd76;
+
+  box-shadow:
+    0 0 14px #8fbd76;
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero-introduction {
+  position: relative;
+
+  z-index: 10;
+
+  min-height: 760px;
+
+  display: flex;
+  align-items: center;
+
+  padding:
+    150px 8vw
+    150px;
+}
+
+.hero-introduction > div {
+  width: 100%;
+  max-width: 680px;
+}
+
+.hero-kicker {
+  margin: 0 0 18px;
+
+  font-size: 11px;
+  letter-spacing: 0.32em;
+
+  color: #d8ad5b;
+}
+
+.hero-introduction h1 {
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(64px, 8vw, 120px);
+
+  line-height: 0.82;
+
+  letter-spacing: -0.06em;
+
+  text-shadow:
+    0 12px 40px
+    rgba(0, 0, 0, 0.45);
+}
+
+.hero-introduction h1 span {
+  color: #d8ad5b;
+}
+
+.hero-role {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-top: 30px;
+
+  font-size: 17px;
+  letter-spacing: 0.05em;
+}
+
+.hero-role span {
+  color: #d8ad5b;
+}
+
+.hero-description {
+  max-width: 520px;
+
+  margin-top: 20px;
+
+  color:
+    rgba(245, 234, 210, 0.72);
+
+  font-size: 15px;
+
+  line-height: 1.7;
+}
+
+.hero-motto {
+  margin-top: 25px;
+
+  font-size: 10px;
+  letter-spacing: 0.28em;
+
+  color:
+    rgba(245, 234, 210, 0.45);
+}
+
+/* =====================================================
+   BAIT AREA
+===================================================== */
+
+.expedition-baits {
+  position: relative;
+
+  z-index: 20;
+
+  width:
+    min(1100px, calc(100% - 60px));
+
+  margin: 0 auto;
+
+  padding:
+    45px 0
+    110px;
+}
+
+.bait-heading {
+  margin-bottom: 26px;
+
+  text-align: center;
+}
+
+.bait-heading span {
+  display: block;
+
+  font-size: 10px;
+  letter-spacing: 0.3em;
+
+  color: #d8ad5b;
+}
+
+.bait-heading p {
+  margin: 8px 0 0;
+
+  color:
+    rgba(245, 234, 210, 0.55);
+
+  font-size: 13px;
+}
+
+.bait-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 18px;
+
+  width: 100%;
+}
+
+/* =====================================================
+   TRAP BUTTON
+===================================================== */
+
+.trap-button {
+  position: relative;
+
+  min-height: 145px;
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+
+  padding: 22px;
+
+  border:
+    1px solid
+    rgba(245, 234, 210, 0.16);
+
+  border-radius: 7px;
+
+  color: #f5ead2;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(29, 59, 40, 0.86),
+      rgba(7, 20, 15, 0.92)
+    );
+
+  box-shadow:
+    0 20px 50px
+    rgba(0, 0, 0, 0.3);
+
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s,
+    transform 0.3s;
+}
+
+.trap-button::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at 80% 10%,
+      rgba(216, 173, 91, 0.18),
+      transparent 40%
+    );
+
+  pointer-events: none;
+}
+
+.trap-button:hover {
+  border-color:
+    rgba(216, 173, 91, 0.65);
+
+  box-shadow:
+    0 25px 70px
+      rgba(0, 0, 0, 0.5),
+    0 0 30px
+      rgba(216, 173, 91, 0.08);
+}
+
+.trap-button:focus-visible {
+  outline:
+    2px solid
+    #d8ad5b;
+
+  outline-offset: 4px;
+}
+
+.trap-line {
+  position: absolute;
+
+  top: -45px;
+  left: 50%;
+
+  width: 1px;
+  height: 60px;
+
+  background:
+    rgba(245, 234, 210, 0.35);
+
+  transform:
+    rotate(10deg);
+
+  transform-origin: bottom;
+}
+
+.trap-icon {
+  position: absolute;
+
+  top: 18px;
+  right: 20px;
+
+  font-size: 25px;
+
+  filter:
+    drop-shadow(
+      0 5px 10px
+      rgba(0, 0, 0, 0.5)
+    );
+}
+
+.trap-label {
+  position: relative;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  letter-spacing: 0.1em;
+}
+
+.trap-subtitle {
+  margin-top: 6px;
+
+  font-size: 9px;
+
+  letter-spacing: 0.25em;
+
+  color: #d8ad5b;
+}
+
+/* =====================================================
+   TRAP TYPES
+===================================================== */
+
+.trap-fishing {
+  transform-origin:
+    50% 0;
+}
+
+.trap-mechanical {
+  border-radius: 4px;
+}
+
+.trap-rope {
+  border-style: dashed;
+}
+
+.trap-tracking {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(39, 68, 43, 0.9),
+      rgba(8, 23, 14, 0.95)
+    );
+}
+
+.trap-scroll {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(74, 57, 35, 0.9),
+      rgba(30, 21, 13, 0.95)
+    );
+}
+
+.trap-backpack {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(51, 54, 35, 0.9),
+      rgba(18, 22, 14, 0.95)
+    );
+}
+
+.trap-digital {
+  border-color:
+    rgba(74, 216, 255, 0.18);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(11, 39, 51, 0.9),
+      rgba(4, 15, 21, 0.96)
+    );
+}
+
+.trap-bottle {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(31, 57, 61, 0.9),
+      rgba(6, 20, 22, 0.96)
+    );
+}
+
+/* =====================================================
+   CAPTURE OVERLAY
+===================================================== */
+
+.trap-capture-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+}
+
+.capture-vignette {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle,
+      transparent 20%,
+      rgba(0, 0, 0, 0.7)
+    );
+}
+
+.caught-text {
+  position: relative;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(55px, 10vw, 130px);
+
+  letter-spacing: 0.08em;
+
+  color: #f3d184;
+
+  text-shadow:
+    0 0 30px
+      rgba(216, 173, 91, 0.7),
+    0 10px 40px
+      rgba(0, 0, 0, 0.8);
+}
+
+/* =====================================================
+   PANEL BACKDROP SUPPORT
+===================================================== */
+
+.trap-panel-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 190;
+
+  background:
+    rgba(0, 0, 0, 0.55);
+
+  backdrop-filter:
+    blur(4px);
+}
+
+/* =====================================================
+   PANEL
+===================================================== */
+
+.trap-panel {
+  position: fixed;
+
+  z-index: 200;
+
+  top: 50%;
+  left: 50%;
+
+  width:
+    min(900px, calc(100vw - 48px));
+
+  /*
+    IMPORTANT:
+    Never let the panel become taller
+    than the available screen.
+  */
+  height:
+    min(760px, calc(100vh - 80px));
+
+  max-height:
+    calc(100vh - 80px);
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  transform:
+    translate(-50%, -50%);
+
+  padding: 34px 36px 40px;
+
+  border:
+    1px solid
+    rgba(216, 173, 91, 0.3);
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20, 38, 27, 0.98),
+      rgba(5, 14, 10, 0.99)
+    );
+
+  box-shadow:
+    0 40px 120px
+      rgba(0, 0, 0, 0.7),
+    0 0 60px
+      rgba(216, 173, 91, 0.06);
+
+  backdrop-filter:
+    blur(25px);
+
+  -webkit-overflow-scrolling:
+    touch;
+
+  overscroll-behavior:
+    contain;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    rgba(216, 173, 91, 0.45)
+    rgba(255, 255, 255, 0.04);
+}
+
+/* Panel scrollbar */
+
+.trap-panel::-webkit-scrollbar {
+  width: 7px;
+}
+
+.trap-panel::-webkit-scrollbar-track {
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+.trap-panel::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+
+  background:
+    rgba(216, 173, 91, 0.45);
+}
+
+.trap-panel::-webkit-scrollbar-thumb:hover {
+  background:
+    rgba(216, 173, 91, 0.7);
+}
+
+.trap-panel::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(216, 173, 91, 0.05),
+      transparent 40%
+    );
+}
+
+/* =====================================================
+   PANEL TOP
+===================================================== */
+
+.panel-top {
+  position: sticky;
+
+  top: -34px;
+
+  z-index: 5;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin:
+    -34px -36px
+    35px;
+
+  padding:
+    25px 36px
+    20px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(20, 38, 27, 0.99),
+      rgba(20, 38, 27, 0.94),
+      rgba(20, 38, 27, 0)
+    );
+
+  backdrop-filter:
+    blur(10px);
+}
+
+.panel-trap {
+  font-size: 10px;
+
+  letter-spacing: 0.2em;
+
+  color: #d8ad5b;
+}
+
+.panel-close {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  border:
+    1px solid
+    rgba(245, 234, 210, 0.25);
+
+  border-radius: 50%;
+
+  color: #f5ead2;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+
+  font-size: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    background 0.2s,
+    transform 0.2s,
+    border-color 0.2s;
+}
+
+.panel-close:hover {
+  background:
+    rgba(255, 255, 255, 0.12);
+
+  border-color:
+    rgba(216, 173, 91, 0.6);
+
+  transform:
+    rotate(90deg);
+}
+
+.panel-close:focus-visible {
+  outline:
+    2px solid
+    #d8ad5b;
+
+  outline-offset: 3px;
+}
+
+/* =====================================================
+   PANEL CONTENT
+===================================================== */
+
+.panel-content {
+  position: relative;
+
+  padding-bottom: 10px;
+}
+
+.panel-eyebrow {
+  font-size: 10px;
+
+  letter-spacing: 0.25em;
+
+  color:
+    rgba(245, 234, 210, 0.45);
+}
+
+.panel-content h2 {
+  margin:
+    8px 0
+    25px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(42px, 6vw, 75px);
+
+  line-height: 0.9;
+
+  color: #f5ead2;
+}
+
+.panel-text {
+  max-width: 720px;
+}
+
+.panel-text p,
+.resume-content p,
+.github-content p,
+.contact-content > p {
+  color:
+    rgba(245, 234, 210, 0.72);
+
+  font-size: 16px;
+
+  line-height: 1.8;
+}
+
+.panel-text p + p {
+  margin-top: 15px;
+}
+
+/* =====================================================
+   PROJECTS
+===================================================== */
+
+.project-list {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+.project-card {
+  padding: 22px;
+
+  border:
+    1px solid
+    rgba(245, 234, 210, 0.1);
+
+  border-radius: 6px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+.project-card > span {
+  font-size: 10px;
+
+  letter-spacing: 0.2em;
+
+  color: #d8ad5b;
+}
+
+.project-card h3 {
+  margin:
+    12px 0
+    8px;
+
+  font-size: 18px;
+}
+
+.project-card p {
+  margin: 0;
+
+  color:
+    rgba(245, 234, 210, 0.6);
+
+  line-height: 1.6;
+}
+
+.project-card small {
+  display: block;
+
+  margin-top: 16px;
+
+  color: #8fbd76;
+
+  font-size: 10px;
+
+  letter-spacing: 0.06em;
+}
+
+/* =====================================================
+   SKILLS
+===================================================== */
+
+.skills-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 15px;
+}
+
+.skills-grid > div {
+  padding: 22px;
+
+  border-left:
+    2px solid
+    rgba(216, 173, 91, 0.6);
+
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+.skills-grid h3 {
+  margin:
+    0 0
+    8px;
+}
+
+.skills-grid p {
+  margin: 0;
+
+  color:
+    rgba(245, 234, 210, 0.6);
+
+  line-height: 1.6;
+}
+
+/* =====================================================
+   EXPERIENCE
+===================================================== */
+
+.experience-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+.experience-list article {
+  display: flex;
+
+  gap: 20px;
+
+  padding: 20px;
+
+  border-bottom:
+    1px solid
+    rgba(245, 234, 210, 0.1);
+}
+
+.experience-marker {
+  color: #d8ad5b;
+
+  font-size: 12px;
+
+  letter-spacing: 0.15em;
+}
+
+.experience-list h3 {
+  margin:
+    0 0
+    8px;
+}
+
+.experience-list p {
+  margin: 0;
+
+  color:
+    rgba(245, 234, 210, 0.6);
+
+  line-height: 1.7;
+}
+
+/* =====================================================
+   CERTIFICATES
+===================================================== */
+
+.certificate-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+.certificate-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  padding: 22px;
+
+  border:
+    1px solid
+    rgba(245, 234, 210, 0.1);
+
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+.certificate-item > span {
+  color: #d8ad5b;
+
+  font-size: 11px;
+}
+
+.certificate-item h3 {
+  margin:
+    0 0
+    5px;
+}
+
+.certificate-item p {
+  margin: 0;
+
+  color:
+    rgba(245, 234, 210, 0.55);
+}
+
+/* =====================================================
+   ACTIONS
+===================================================== */
+
+.panel-action {
+  margin-top: 25px;
+
+  padding:
+    13px 20px;
+
+  border:
+    1px solid
+    rgba(216, 173, 91, 0.6);
+
+  border-radius: 4px;
+
+  color: #07140f;
+
+  background: #d8ad5b;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.12em;
+
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.panel-action:hover {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 10px 30px
+    rgba(216, 173, 91, 0.2);
+}
+
+.panel-secondary-action {
+  display: inline-block;
+
+  margin-top: 25px;
+  margin-left: 10px;
+
+  padding:
+    12px 18px;
+
+  border:
+    1px solid
+    rgba(245, 234, 210, 0.2);
+
+  border-radius: 4px;
+
+  font-size: 11px;
+
+  letter-spacing: 0.1em;
+}
+
+.contact-links {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+  margin-top: 25px;
+}
+
+.contact-links a {
+  padding:
+    12px 18px;
+
+  border:
+    1px solid
+    rgba(216, 173, 91, 0.3);
+
+  color: #d8ad5b;
+
+  font-size: 11px;
+
+  letter-spacing: 0.12em;
+
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.contact-links a:hover {
+  color: #07140f;
+
+  background: #d8ad5b;
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1000px) {
+  .hero-introduction {
+    padding-left: 7vw;
+    padding-right: 7vw;
+  }
+
+  .bait-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  /*
+    Slightly smaller panel for laptops/tablets.
+  */
+
+  .trap-panel {
+    width:
+      min(850px, calc(100vw - 40px));
+
+    height:
+      min(720px, calc(100vh - 50px));
+
+    max-height:
+      calc(100vh - 50px);
+  }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 850px) {
+  .expedition-hud {
+    padding:
+      18px 20px;
+  }
+
+  .hud-status {
+    display: none;
+  }
+
+  .hero-introduction {
+    min-height: 680px;
+
+    padding:
+      125px 25px
+      100px;
+  }
+
+  .hero-introduction h1 {
+    font-size:
+      clamp(60px, 18vw, 100px);
+  }
+
+  .hero-role {
+    flex-wrap: wrap;
+  }
+
+  .hero-description {
+    max-width: 560px;
+  }
+
+  .expedition-baits {
+    width:
+      calc(100% - 36px);
+
+    margin:
+      0 auto;
+
+    padding:
+      35px 0
+      80px;
+  }
+
+  .bait-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+  }
+
+  .trap-button {
+    min-height: 125px;
+  }
+
+  /* -----------------------------------------------
+     MOBILE PANEL
+  ----------------------------------------------- */
+
+  .trap-panel {
+    top: 12px;
+    left: 12px;
+
+    width:
+      calc(100vw - 24px);
+
+    height:
+      calc(100vh - 24px);
+
+    max-height:
+      calc(100vh - 24px);
+
+    transform: none;
+
+    padding:
+      24px 22px
+      30px;
+
+    border-radius: 9px;
+  }
+
+  .panel-top {
+    top: -24px;
+
+    margin:
+      -24px -22px
+      28px;
+
+    padding:
+      20px 22px
+      18px;
+  }
+
+  .panel-close {
+    width: 38px;
+    height: 38px;
+  }
+
+  .project-list,
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-content h2 {
+    font-size:
+      clamp(40px, 10vw, 65px);
+  }
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 500px) {
+  .expedition-hud {
+    padding:
+      16px;
+  }
+
+  .hud-number {
+    font-size: 8px;
+  }
+
+  .hud-brand strong {
+    font-size: 9px;
+
+    letter-spacing:
+      0.08em;
+  }
+
+  .hero-introduction {
+    min-height: 620px;
+
+    padding:
+      110px 20px
+      80px;
+  }
+
+  .hero-introduction h1 {
+    font-size:
+      clamp(54px, 19vw, 82px);
+  }
+
+  .hero-kicker {
+    font-size: 9px;
+
+    letter-spacing:
+      0.24em;
+  }
+
+  .hero-role {
+    gap: 8px;
+
+    margin-top: 24px;
+
+    font-size: 14px;
+  }
+
+  .hero-description {
+    margin-top: 16px;
+
+    font-size: 14px;
+
+    line-height: 1.65;
+  }
+
+  .hero-motto {
+    font-size: 8px;
+
+    letter-spacing:
+      0.2em;
+  }
+
+  .expedition-baits {
+    width:
+      calc(100% - 24px);
+
+    padding:
+      30px 0
+      70px;
+  }
+
+  .bait-heading {
+    margin-bottom: 20px;
+  }
+
+  .bait-heading span {
+    font-size: 8px;
+
+    letter-spacing:
+      0.24em;
+  }
+
+  .bait-heading p {
+    font-size: 11px;
+  }
+
+  .bait-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+  }
+
+  .trap-button {
+    min-height: 115px;
+
+    padding:
+      15px;
+  }
+
+  .trap-icon {
+    top: 12px;
+    right: 14px;
+
+    font-size: 20px;
+  }
+
+  .trap-label {
+    font-size: 12px;
+  }
+
+  .trap-subtitle {
+    font-size: 8px;
+  }
+
+  /* -----------------------------------------------
+     SMALL MOBILE PANEL
+  ----------------------------------------------- */
+
+  .trap-panel {
+    top: 8px;
+    left: 8px;
+
+    width:
+      calc(100vw - 16px);
+
+    height:
+      calc(100vh - 16px);
+
+    max-height:
+      calc(100vh - 16px);
+
+    padding:
+      20px 17px
+      25px;
+  }
+
+  .panel-top {
+    top: -20px;
+
+    margin:
+      -20px -17px
+      24px;
+
+    padding:
+      18px 17px
+      16px;
+  }
+
+  .panel-trap {
+    font-size: 8px;
+  }
+
+  .panel-close {
+    width: 35px;
+    height: 35px;
+
+    font-size: 20px;
+  }
+
+  .panel-content h2 {
+    font-size: 42px;
+
+    margin-bottom:
+      20px;
+  }
+
+  .panel-text p,
+  .resume-content p,
+  .github-content p,
+  .contact-content > p {
+    font-size: 14px;
+
+    line-height: 1.7;
+  }
+
+  .project-card {
+    padding: 18px;
+  }
+
+  .skills-grid > div {
+    padding: 18px;
+  }
+
+  .experience-list article {
+    flex-direction: column;
+
+    gap: 8px;
+
+    padding:
+      18px 0;
+  }
+
+  .certificate-item {
+    align-items:
+      flex-start;
+
+    padding: 18px;
+  }
+
+  .panel-secondary-action {
+    margin-left: 0;
+  }
+
+  .contact-links {
+    flex-direction: column;
+  }
+
+  .contact-links a {
+    text-align: center;
+  }
+}
+
+/* =====================================================
+   VERY SMALL DEVICES
+===================================================== */
+
+@media (max-width: 360px) {
+  .hero-introduction {
+    min-height: 590px;
+
+    padding:
+      105px 17px
+      70px;
+  }
+
+  .hero-introduction h1 {
+    font-size:
+      clamp(48px, 19vw, 70px);
+  }
+
+  .bait-grid {
+    gap: 8px;
+  }
+
+  .trap-button {
+    min-height: 105px;
+
+    padding: 12px;
+  }
+
+  .trap-icon {
+    top: 9px;
+    right: 10px;
+
+    font-size: 17px;
+  }
+
+  .trap-label {
+    font-size: 10px;
+  }
+
+  .trap-subtitle {
+    font-size: 7px;
+
+    letter-spacing:
+      0.16em;
+  }
+
+  .trap-panel {
+    top: 5px;
+    left: 5px;
+
+    width:
+      calc(100vw - 10px);
+
+    height:
+      calc(100vh - 10px);
+
+    padding:
+      17px 14px
+      22px;
+  }
+
+  .panel-top {
+    top: -17px;
+
+    margin:
+      -17px -14px
+      20px;
+
+    padding:
+      16px 14px
+      14px;
+  }
+
+  .panel-content h2 {
+    font-size: 36px;
+  }
+}
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
+
+    scroll-behavior:
+      auto !important;
+  }
+}
