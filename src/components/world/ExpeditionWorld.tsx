@@ -1,256 +1,233 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import Interactive3DButton from "../ui/Interactive3DButton";
+import AboutPanel from "../panels/AboutPanel";
+import ProjectsPanel from "../panels/ProjectsPanel";
+import SkillsPanel from "../panels/SkillsPanel";
+import ExperiencePanel from "../panels/ExperiencePanel";
+import CertificatesPanel from "../panels/CertificatesPanel";
+import ResumePanel from "../panels/ResumePanel";
+import ContactCatch from "../panels/ContactCatch";
 
-import Environment from "./Environment";
-import Wildlife from "./Wildlife";
-import Explorer from "../fisherman/Explorer";
-import ExpeditionHUD from "../ui/ExpeditionHUD";
-import TrapButton, {
-  type TrapType,
-} from "../traps/TrapButton";
-import TrapPanel, {
-  type PortfolioSection,
-} from "../traps/TrapPanel";
-
-type ActiveSection = PortfolioSection | null;
-
-const trapButtons: {
-  id: PortfolioSection;
-  label: string;
-  trap: TrapType;
-  icon: string;
-}[] = [
-  {
-    id: "about",
-    label: "ABOUT",
-    trap: "fishing",
-    icon: "🎣",
-  },
-  {
-    id: "projects",
-    label: "PROJECTS",
-    trap: "mechanical",
-    icon: "🪤",
-  },
-  {
-    id: "skills",
-    label: "SKILLS",
-    trap: "rope",
-    icon: "🪢",
-  },
-  {
-    id: "experience",
-    label: "EXPERIENCE",
-    trap: "tracking",
-    icon: "🐾",
-  },
-  {
-    id: "certificates",
-    label: "CERTIFICATES",
-    trap: "scroll",
-    icon: "📜",
-  },
-  {
-    id: "resume",
-    label: "RESUME",
-    trap: "backpack",
-    icon: "🎒",
-  },
-  {
-    id: "github",
-    label: "GITHUB",
-    trap: "digital",
-    icon: "✦",
-  },
-  {
-    id: "contact",
-    label: "CONTACT",
-    trap: "bottle",
-    icon: "🍾",
-  },
+const ROLES = [
+  "Software Developer",
+  "AI/ML Engineer",
+  "Backend Developer",
+  "UI/UX Enthusiast"
 ];
 
-function ExpeditionWorld() {
-  const [activeSection, setActiveSection] =
-    useState<ActiveSection>(null);
+const SECTIONS = [
+  { id: "about", label: "ABOUT", icon: "👤", Component: AboutPanel },
+  { id: "projects", label: "PROJECTS", icon: "🚀", Component: ProjectsPanel },
+  { id: "skills", label: "SKILLS", icon: "⚡", Component: SkillsPanel },
+  { id: "experience", label: "EXPERIENCE", icon: "💼", Component: ExperiencePanel },
+  { id: "certificates", label: "CERTIFICATES", icon: "🎓", Component: CertificatesPanel },
+  { id: "resume", label: "RESUME", icon: "📄", Component: ResumePanel },
+  { id: "contact", label: "CONTACT", icon: "📫", Component: ContactCatch },
+];
 
-  const [caughtTrap, setCaughtTrap] =
-    useState<TrapType | null>(null);
+export default function ExpeditionWorld() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLElement>(null);
+  
+  // About is open on arrival — no click needed to see content.
+  const [activeSection, setActiveSection] = useState<string | null>("about");
+  const [roleIndex, setRoleIndex] = useState(0);
 
-  const handleTrapComplete = (
-    section: PortfolioSection,
-    trap: TrapType
-  ) => {
-    setCaughtTrap(null);
-    setActiveSection(section);
+  // Dynamic Role Switcher
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % ROLES.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  // Parallax for Hero Background
+  const bgY = useTransform(scrollYProgress, [0, 0.5], ["0%", "30%"]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
+
+  // Handle Navigation Click
+  const handleNavClick = (sectionId: string) => {
+    if (activeSection === sectionId) return;
+    setActiveSection(sectionId);
+    
+    // Smooth scroll to content section
+    if (contentRef.current) {
+      contentRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
-  const handleClosePanel = () => {
-    setActiveSection(null);
-  };
+  const ActiveComponent = SECTIONS.find(s => s.id === activeSection)?.Component;
 
   return (
-    <main className="expedition-world">
-      {/* WORLD */}
-      <Environment />
-      <Wildlife />
-
-      {/* Cinematic opening */}
-      <motion.div
-        className="cinematic-vignette"
-        initial={{ opacity: 1 }}
-        animate={{ opacity: 0 }}
-        transition={{
-          duration: 2,
-          ease: "easeOut",
-        }}
-      />
-
-      {/* HUD */}
-      <ExpeditionHUD discovered={Boolean(activeSection)} />
-
-      {/* HERO */}
-      <section className="hero-introduction">
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 30,
+    <main ref={containerRef} className="professional-portfolio">
+      
+      {/* --- HERO / INTRO SECTION --- */}
+      <section className="hero-section">
+        <motion.div 
+          className="hero-background"
+          style={{ 
+            backgroundImage: "url('/assets/environment/basecamp.jpg')", // Keeping the cinematic BG, but styling it cleaner
+            y: bgY 
           }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            duration: 1.2,
-            delay: 0.4,
-          }}
+        />
+        <div className="hero-overlay" />
+
+        <motion.div 
+          className="hero-content-wrapper"
+          style={{ opacity: heroOpacity }}
         >
-          <p className="hero-kicker">
-            THE DEVELOPER'S EXPEDITION
-          </p>
-
-          <h1>
-            GUDDU
-            <br />
-            <span>MISHRA</span>
-          </h1>
-
-          <p className="hero-role">
-            Software Developer
-            <span>•</span>
-            AI/ML Enthusiast
-          </p>
-
-          <p className="hero-description">
-            I build practical software, machine-learning
-            systems, and interactive digital experiences.
-          </p>
-
-          <p className="hero-motto">
-            CAST. EXPLORE. BUILD. DISCOVER.
-          </p>
-        </motion.div>
-      </section>
-
-      {/* EXPLORER */}
-      <Explorer discovered={Boolean(activeSection)} />
-
-      {/* PORTFOLIO BAITS */}
-      <section
-        className="expedition-baits"
-        aria-label="Portfolio navigation"
-      >
-        <motion.div
-          className="bait-heading"
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            delay: 1.2,
-            duration: 0.8,
-          }}
-        >
-          <span>CHOOSE YOUR TRAIL</span>
-          <p>
-            Every path reveals something about the
-            expedition.
-          </p>
-        </motion.div>
-
-        <div className="bait-grid">
-          {trapButtons.map((button, index) => (
-            <TrapButton
-              key={button.id}
-              label={button.label}
-              icon={button.icon}
-              trap={button.trap}
-              delay={1.3 + index * 0.08}
-              onCaught={() =>
-                handleTrapComplete(
-                  button.id,
-                  button.trap
-                )
-              }
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* TRAP ANIMATION LAYER */}
-      <AnimatePresence>
-        {caughtTrap && (
-          <motion.div
-            className="trap-capture-overlay"
-            initial={{
-              opacity: 0,
-            }}
-            animate={{
-              opacity: 1,
-            }}
-            exit={{
-              opacity: 0,
-            }}
+          <motion.div 
+            className="profile-image-container"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <div className="capture-vignette" />
+            <img src="/assets/profile.jpeg" alt="Guddu Mishra" className="profile-image" />
+            <div className="profile-glow" />
 
-            <motion.div
-              className="caught-text"
-              initial={{
-                opacity: 0,
-                scale: 0.5,
-                rotate: -8,
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                rotate: 0,
-              }}
-              transition={{
-                duration: 0.35,
-              }}
+            <motion.button
+              type="button"
+              className="hire-button"
+              onClick={() => handleNavClick("contact")}
+              initial={{ opacity: 0, scale: 0.6, y: 8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ delay: 1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ scale: 1.06 }}
+              whileTap={{ scale: 0.96 }}
             >
-              CAUGHT
-            </motion.div>
+              <span aria-hidden="true">✦</span> HIRE ME
+            </motion.button>
           </motion.div>
-        )}
-      </AnimatePresence>
 
-      {/* INFORMATION PANEL */}
-      <AnimatePresence>
-        {activeSection && (
-          <TrapPanel
-            section={activeSection}
-            onClose={handleClosePanel}
-          />
-        )}
-      </AnimatePresence>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            GUDDU MISHRA
+          </motion.h1>
+
+          <div className="role-switcher-container">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={roleIndex}
+                className="dynamic-role"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.4 }}
+              >
+                {ROLES[roleIndex]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+
+          <motion.p 
+            className="hero-tagline"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.6 }}
+          >
+            Building practical software, machine learning systems, and exceptional digital experiences.
+          </motion.p>
+
+          <motion.div 
+            className="hero-actions"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+          >
+            <Interactive3DButton 
+              label="VIEW PROJECTS" 
+              icon="🚀" 
+              onClick={() => handleNavClick("projects")} 
+            />
+            <Interactive3DButton
+              label="DOWNLOAD RESUME"
+              icon="📄"
+              onClick={() => handleNavClick("resume")}
+            />
+          </motion.div>
+
+          <motion.div 
+            className="scroll-down-hint"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+            onClick={() => handleNavClick("about")}
+          >
+            <span>↓</span>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* --- CONTENT SECTION --- */}
+      <section ref={contentRef} className="content-section">
+        
+        {/* Sticky Navigation */}
+        <nav className="portfolio-nav">
+          <div className="nav-container">
+            {SECTIONS.map((section, i) => (
+              <motion.button
+                key={section.id}
+                className={`nav-button ${activeSection === section.id ? "active" : ""}`}
+                onClick={() => handleNavClick(section.id)}
+                initial={{ opacity: 0, y: -16, filter: "blur(6px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{
+                  delay: 0.2 + i * 0.09,
+                  duration: 0.55,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <span className="nav-icon">{section.icon}</span>
+                <span className="nav-label">{section.label}</span>
+                {activeSection === section.id && (
+                  <motion.div layoutId="nav-indicator" className="nav-indicator" />
+                )}
+              </motion.button>
+            ))}
+          </div>
+        </nav>
+
+        {/* Dynamic Content Area */}
+        <div className="content-display-area">
+          <AnimatePresence mode="wait">
+            {activeSection ? (
+              <motion.div
+                key={activeSection}
+                initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
+                transition={{ duration: 0.4 }}
+                className="content-panel-wrapper"
+              >
+                {ActiveComponent && <ActiveComponent />}
+              </motion.div>
+            ) : (
+              <motion.div 
+                className="empty-state"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                <p>Select a section from the navigation menu.</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+      </section>
+      
+      {/* Footer spacer */}
+      <footer className="portfolio-footer">
+        <p>© {new Date().getFullYear()} Guddu Mishra. All rights reserved.</p>
+      </footer>
     </main>
   );
 }
-
-export default ExpeditionWorld;
